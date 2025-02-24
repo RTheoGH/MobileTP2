@@ -6,12 +6,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +25,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.pays_liste.ui.theme.Pays_listeTheme
@@ -46,22 +52,29 @@ class SecondActivity : ComponentActivity() {
                     }
                 ) { innerPadding ->
                     Column(
+                        verticalArrangement = Arrangement.Center,
                         modifier = Modifier.padding(innerPadding).padding(16.dp)
                     ) {
                         Image(
                             painter = painterResource(id = pays.imageRes),
                             contentDescription = null,
-                            modifier = Modifier.height(200.dp).size(500.dp)
+                            modifier = Modifier.height(200.dp).size(500.dp),
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-
-                        Text("Capitale: ${pays.capitale}")
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text("Superficie: ${pays.superficie} km²")
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text("Population: ${pays.population}")
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(Color(216, 224, 253, 255))
+                                .padding(8.dp)
+                        ){
+                            Text("Capitale : ${pays.capitale}")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Superficie : ${pays.superficie} km²")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("Population : ${pays.population}")
+                        }
                         Spacer(modifier = Modifier.height(16.dp))
-
                         Button(onClick = { finish() }) {
                             Text("Retour")
                         }

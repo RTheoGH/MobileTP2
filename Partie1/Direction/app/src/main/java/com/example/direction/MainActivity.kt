@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
 fun Direction(innerPadding: PaddingValues) {
     val ctx = LocalContext.current
     val sensorManager = ctx.getSystemService(SENSOR_SERVICE) as SensorManager
-    val rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+    val rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
 
     var direction by remember { mutableStateOf("Stable") }
 

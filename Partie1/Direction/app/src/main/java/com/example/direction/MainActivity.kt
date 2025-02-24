@@ -29,6 +29,7 @@ import com.example.direction.ui.theme.DirectionTheme
 import android.hardware.Sensor.TYPE_ROTATION_VECTOR
 import android.hardware.SensorManager.getRotationMatrixFromVector
 import android.hardware.SensorManager.getOrientation
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
@@ -46,12 +47,12 @@ class MainActivity : ComponentActivity() {
                                 titleContentColor = MaterialTheme.colorScheme.primary,
                             ),
                             title = {
-                                Text("Rotation du Téléphone")
+                                Text("Direction du Téléphone")
                             }
                         )
                     }
                 ) { innerPadding ->
-                    RotationSensor(innerPadding)
+                    Direction(innerPadding)
                 }
             }
         }
@@ -59,27 +60,25 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun RotationSensor(innerPadding: PaddingValues) {
+fun Direction(innerPadding: PaddingValues) {
     val ctx = LocalContext.current
     val sensorManager = ctx.getSystemService(SENSOR_SERVICE) as SensorManager
-    val rotationSensor = sensorManager.getDefaultSensor(TYPE_ROTATION_VECTOR)
+    val rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
     var direction by remember { mutableStateOf("Stable") }
 
     val sensorEventListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent?) {
             event?.let {
-                val rotationMatrix = FloatArray(9)
-                getRotationMatrixFromVector(rotationMatrix, it.values)
-                val orientationValues = FloatArray(3)
-                getOrientation(rotationMatrix, orientationValues)
-                val pos = Math.toDegrees(orientationValues[0].toDouble()).roundToInt()
+                val x = it.values[0]
+                val y = it.values[1]
 
                 direction = when {
-                    pos in 35..135 -> "haut"
-                    pos in 115..255 -> "droite"
-                    pos in 255..345 -> "bas"
-                    else -> "gauche"
+                    abs(x) > abs(y) && x < -2 -> "Droite"
+                    abs(x) > abs(y) && x > 2 -> "Gauche"
+                    abs(y) > abs(x) && y > 2 -> "Haut"
+                    abs(y) > abs(x) && y < -2 -> "Bas"
+                    else -> "Stable"
                 }
             }
         }

@@ -169,7 +169,7 @@ fun PaysDesc(pays: Pays?){
             }
 
         }else{
-            Text("choisie un pays")
+            Text("Choisir un pays.")
         }
     }
 }

@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 ) { innerPadding ->
-                    ShakeToFlash(innerPadding)
+                    Secoue(innerPadding)
                 }
             }
         }
@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ShakeToFlash(innerPadding: PaddingValues) {
+fun Secoue(innerPadding: PaddingValues) {
     val ctx = LocalContext.current
     val sensorManager = ctx.getSystemService(SENSOR_SERVICE) as SensorManager
     val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -81,7 +81,7 @@ fun ShakeToFlash(innerPadding: PaddingValues) {
                 if (acceleration > 15 && currentTime - Shake > 1000) {
                     Shake = currentTime
                     flash = !flash
-                    toggleFlash(flash, cameraManager, cameraId)
+                    Flash(flash, cameraManager, cameraId)
                 }
             }
         }
@@ -98,7 +98,7 @@ fun ShakeToFlash(innerPadding: PaddingValues) {
     DisposableEffect(Unit) {
         onDispose {
             sensorManager.unregisterListener(sensorEventListener)
-            toggleFlash(false, cameraManager, cameraId)
+            Flash(false, cameraManager, cameraId)
         }
     }
 
@@ -108,11 +108,13 @@ fun ShakeToFlash(innerPadding: PaddingValues) {
             .fillMaxSize()
             .background(Color.White)
     ) {
-        Text(text = "Flash: ${if (flash) "Allumé" else "Éteint"}", modifier = Modifier.padding(16.dp))
+        Text(
+            text = "Flash: ${if (flash) "Allumé" else "Éteint"}",
+            modifier = Modifier.padding(16.dp))
     }
 }
 
-fun toggleFlash(turnOn: Boolean, cameraManager: CameraManager, cameraId: String?) {
+fun Flash(turnOn: Boolean, cameraManager: CameraManager, cameraId: String?) {
     cameraId?.let {
         try {
             cameraManager.setTorchMode(it, turnOn)

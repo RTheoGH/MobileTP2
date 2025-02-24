@@ -8,15 +8,19 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.hardware.camera2.CameraManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -66,12 +71,19 @@ fun Prox(innerPadding: PaddingValues) {
     val sensorManager = ctx.getSystemService(SENSOR_SERVICE) as SensorManager
     val proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)
 
+    if(proximitySensor == null){
+        Text(text = "Pas de capteur")
+        return
+    }
+
     var isFar by remember { mutableStateOf(true) }
 
     val sensorEventListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent?) {
             event?.let {
-                isFar = it.values[0] >= 5.0
+                val distance = it.values[0]
+                Log.d("Proximity", "Distance : $distance")
+                isFar = distance >= 5.0
             }
         }
 
@@ -91,10 +103,12 @@ fun Prox(innerPadding: PaddingValues) {
     }
 
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .padding(innerPadding)
-            .fillMaxSize()
-            .background(Color.White)
+            .padding(16.dp)
+            .fillMaxWidth()
     ) {
         if (isFar) {
             Image(
@@ -104,14 +118,22 @@ fun Prox(innerPadding: PaddingValues) {
                     .padding(vertical = 10.dp)
                     .fillMaxWidth(.9f)
             )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "Aucun objet ou trop loin."
+            )
         }else{
             Image(
                 painter = painterResource(id = R.drawable.proche),
-                contentDescription = "Objet loin",
+                contentDescription = "Objet proche",
+
                 modifier = Modifier
                     .padding(vertical = 10.dp)
                     .fillMaxWidth(.9f)
             )
+            Spacer(modifier = Modifier.height(8.dp)
+            )
+            Text(text = "Objet proche.")
         }
     }
 }

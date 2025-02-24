@@ -86,7 +86,7 @@ fun Geo(innerPadding: PaddingValues) {
         if(permissionGranted){
             locationClient.lastLocation.addOnSuccessListener{location: Location? ->
                 location?.let {
-                    locationText = "Lat : ${it.latitude}, Long : ${it.longitude}"
+                    locationText = "Lat : ${it.latitude}\nLong : ${it.longitude}"
                 }?: run {
                     locationText = "Localisation impossible"
                 }

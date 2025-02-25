@@ -30,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.geolocalisation.ui.theme.GeolocalisationTheme
 import com.google.android.gms.location.LocationServices
@@ -66,6 +65,7 @@ fun Geo(innerPadding: PaddingValues) {
     val locationClient = remember { LocationServices.getFusedLocationProviderClient(ctx) }
     var locationText by remember { mutableStateOf("Recherche...") }
 
+    // Il faut demander la permission d'accéder à la localisation
     var permissionGranted by remember { mutableStateOf(false) }
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),

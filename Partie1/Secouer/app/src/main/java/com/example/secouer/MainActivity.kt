@@ -61,12 +61,12 @@ class MainActivity : ComponentActivity() {
 fun Secoue(innerPadding: PaddingValues) {
     val ctx = LocalContext.current
     val sensorManager = ctx.getSystemService(SENSOR_SERVICE) as SensorManager
-    val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-    val cameraManager = ctx.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+    val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) // On recupere l'accelerometre
+    val cameraManager = ctx.getSystemService(Context.CAMERA_SERVICE) as CameraManager // On recupere également la caméra
     val cameraId = cameraManager.cameraIdList.firstOrNull()
 
     var flash by remember { mutableStateOf(false) }
-    var Shake by remember { mutableStateOf(0L) }
+    var Secouer by remember { mutableStateOf(0L) }
 
     val sensorEventListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent?) {
@@ -78,9 +78,9 @@ fun Secoue(innerPadding: PaddingValues) {
                 val acceleration = sqrt((x * x + y * y + z * z).toDouble()).toFloat()
                 val currentTime = System.currentTimeMillis()
 
-                if (acceleration > 15 && currentTime - Shake > 1000) {
-                    Shake = currentTime
-                    flash = !flash
+                if (acceleration > 15 && currentTime - Secouer > 1000) {
+                    Secouer = currentTime
+                    flash = !flash // On allume ou éteint le flash
                     Flash(flash, cameraManager, cameraId)
                 }
             }
@@ -114,6 +114,7 @@ fun Secoue(innerPadding: PaddingValues) {
     }
 }
 
+// Allumage du flash
 fun Flash(turnOn: Boolean, cameraManager: CameraManager, cameraId: String?) {
     cameraId?.let {
         try {

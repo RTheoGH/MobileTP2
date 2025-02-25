@@ -26,11 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.direction.ui.theme.DirectionTheme
-import android.hardware.Sensor.TYPE_ROTATION_VECTOR
-import android.hardware.SensorManager.getRotationMatrixFromVector
-import android.hardware.SensorManager.getOrientation
 import kotlin.math.abs
-import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -63,7 +59,7 @@ class MainActivity : ComponentActivity() {
 fun Direction(innerPadding: PaddingValues) {
     val ctx = LocalContext.current
     val sensorManager = ctx.getSystemService(SENSOR_SERVICE) as SensorManager
-    val rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
+    val directionSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION) // On utilise LINEAR pour avoir des mouvements linéaires
 
     var direction by remember { mutableStateOf("Stable") }
 
@@ -88,7 +84,7 @@ fun Direction(innerPadding: PaddingValues) {
 
     LaunchedEffect(Unit) {
         sensorManager.registerListener(
-            sensorEventListener, rotationSensor, SensorManager.SENSOR_DELAY_UI
+            sensorEventListener, directionSensor, SensorManager.SENSOR_DELAY_UI
         )
     }
 

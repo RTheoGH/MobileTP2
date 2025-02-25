@@ -1,24 +1,19 @@
 package com.example.proximity
 
-import android.content.Context
 import android.content.Context.SENSOR_SERVICE
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.hardware.camera2.CameraManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,12 +26,10 @@ import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.proximity.ui.theme.ProximityTheme
-import kotlin.math.sqrt
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -69,12 +62,7 @@ class MainActivity : ComponentActivity() {
 fun Prox(innerPadding: PaddingValues) {
     val ctx = LocalContext.current
     val sensorManager = ctx.getSystemService(SENSOR_SERVICE) as SensorManager
-    val proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY)
-
-    if(proximitySensor == null){
-        Text(text = "Pas de capteur")
-        return
-    }
+    val proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY) // On recupere le capteur de proximité
 
     var isFar by remember { mutableStateOf(true) }
 
@@ -82,7 +70,6 @@ fun Prox(innerPadding: PaddingValues) {
         override fun onSensorChanged(event: SensorEvent?) {
             event?.let {
                 val distance = it.values[0]
-                Log.d("Proximity", "Distance : $distance")
                 isFar = distance >= 5.0
             }
         }

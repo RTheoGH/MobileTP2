@@ -56,8 +56,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DetecCapteurs(innerPadding: PaddingValues) {
     val ctx = LocalContext.current
+    // On crée une variable capteurService qui sera notre capteur "général"
     val capteurService: SensorManager? = ctx.getSystemService(Context.SENSOR_SERVICE) as? SensorManager
 
+    // On teste sur ces capteurs par exemple
     val capteurs = listOf(
         Pair(Sensor.TYPE_PRESSURE,"Pressure Sensor"),
         Pair(Sensor.TYPE_ACCELEROMETER,"Accelerometer"),
@@ -90,7 +92,7 @@ fun CapteurCard(capteurService: SensorManager?, type: Int, name: String) {
             text = if(capteurService?.getDefaultSensor(type) != null){
                 "$name est disponible."
             } else {
-                "✘ $name n'est pas disponible."
+                "$name n'est pas disponible."
             },
             modifier = Modifier.padding(16.dp)
         )

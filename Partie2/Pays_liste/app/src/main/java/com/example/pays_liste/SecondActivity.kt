@@ -36,6 +36,7 @@ class SecondActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // On récupère le pays choisi
         val pays = intent.getSerializableExtra("EXTRA_PAYS") as? Pays ?: Pays(0, "Inconnu","Inconnu", 0.0, 0)
 
         setContent {
@@ -56,7 +57,7 @@ class SecondActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding).padding(16.dp)
                     ) {
                         Image(
-                            painter = painterResource(id = pays.imageRes),
+                            painter = painterResource(id = pays.image),
                             contentDescription = null,
                             modifier = Modifier.height(200.dp).size(500.dp),
                         )

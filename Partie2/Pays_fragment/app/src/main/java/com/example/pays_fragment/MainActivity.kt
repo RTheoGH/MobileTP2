@@ -106,7 +106,6 @@ fun Pays(innerPadding : PaddingValues) {
                 .background(Color(216, 224, 253, 255))
                 .padding(8.dp)
                 .horizontalScroll(scrollState)
-
         ){
             pays.forEach{p ->
                 TextButton(
@@ -123,7 +122,7 @@ fun Pays(innerPadding : PaddingValues) {
             }
         }
         Spacer(modifier = Modifier.height(32.dp))
-        PaysDesc(selectedPays)
+        PaysDesc(selectedPays) // On appelle PaysDesc qui va afficher le pays choisi
     }
 }
 
@@ -132,7 +131,7 @@ fun PaysDesc(pays: Pays?){
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        if(pays != null){
+        if(pays != null){ // Si on a sélectionné un pays
             Text(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
@@ -147,7 +146,6 @@ fun PaysDesc(pays: Pays?){
                 modifier = Modifier.height(150.dp).size(500.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -167,7 +165,6 @@ fun PaysDesc(pays: Pays?){
                 Spacer(modifier = Modifier.height(8.dp))
                 Text("PIB : ${pays.pib}")
             }
-
         }else{
             Text("Choisir un pays.")
         }

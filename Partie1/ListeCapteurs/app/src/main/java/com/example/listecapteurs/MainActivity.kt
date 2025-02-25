@@ -9,7 +9,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -59,11 +58,12 @@ class MainActivity : ComponentActivity() {
 fun ListeCapteur(innerPadding:PaddingValues){
     val ctx = LocalContext.current
     val capteurService: SensorManager = ctx.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-    val liste_capteurs: List<Sensor> = capteurService.getSensorList(Sensor.TYPE_ALL)
+    val liste_capteurs: List<Sensor> = capteurService.getSensorList(Sensor.TYPE_ALL) // On recupere la liste de tous les capteurs
 
     Column(
         modifier = Modifier.padding(innerPadding).padding(16.dp)
     ) {
+        // On les affiche tous dans une liste d'objets
         LazyColumn {
             items(liste_capteurs){ capteur ->
                 AfficheCapteur(capteur)
@@ -82,5 +82,4 @@ fun AfficheCapteur(capteur: Sensor){
             modifier = Modifier.padding(16.dp)
         )
     }
-
 }

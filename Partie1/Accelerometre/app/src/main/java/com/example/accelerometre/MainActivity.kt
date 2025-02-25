@@ -65,8 +65,8 @@ class MainActivity : ComponentActivity() {
 fun Accelerometer(innerPadding:PaddingValues){
 
     val ctx = LocalContext.current
-    val sensorManager = ctx.getSystemService(SENSOR_SERVICE) as SensorManager
-    val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+    val sensorManager = ctx.getSystemService(SENSOR_SERVICE) as SensorManager // On  recupere les capteurs
+    val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) // On recupere l'accelerometre
 
     var backgroundColor by remember { mutableStateOf(Color.Yellow) }
     var cpt by remember { mutableFloatStateOf(0f) }
@@ -81,6 +81,7 @@ fun Accelerometer(innerPadding:PaddingValues){
                 val force = sqrt((x*x+y*y+z*z).toDouble()).toFloat()
                 cpt = force
 
+                // On change la couleur de fond selon la force du mouvement
                 backgroundColor = when {
                     force < 15 -> Color.Green
                     force in 15.0..30.0 -> Color.Yellow
@@ -92,6 +93,7 @@ fun Accelerometer(innerPadding:PaddingValues){
         override fun onAccuracyChanged(s: Sensor?, p1: Int) {}
     }
 
+    // On écoute un evenement
     LaunchedEffect(Unit) {
         sensorManager.registerListener(
             sensorEventListener,accelerometer,SensorManager.SENSOR_DELAY_GAME
